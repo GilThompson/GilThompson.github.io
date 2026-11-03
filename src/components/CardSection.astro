@@ -1,0 +1,118 @@
+---
+import { Image } from "astro:assets";
+
+interface Item {
+    title: string;
+    description: string;
+    meta?: string;
+    skills?: string;
+    applications?: string;
+    alt?: string;
+    href?: string;
+    image?: string;
+    linkLabel?: string;
+    linkHref?: string;
+}
+
+interface Props {
+    id: string;
+    heading: string;
+    items: Item[];
+    imagePrefix: string;
+}
+
+const { id, heading, items, imagePrefix } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>("../assets/*.png", {
+    eager: true,
+});
+
+// Image: explicit item.image, otherwise matched by order: <imagePrefix>-1.png, -2.png, ...
+const cards = items.map((item, i) => {
+    const file = item.image ?? `${imagePrefix}-${i + 1}.png`;
+    return { ...item, file, image: images[`../assets/${file}`]?.default };
+});
+---
+
+<section class="portfolio" id={id}>
+    <div class="portfolio-left-section">
+        <h2 class="portfolio-heading">{heading}</h2>
+    </div>
+    <div class="portfolio-right-section" data-carousel>
+        <button class="portfolio-btn-left" aria-label="Previous">
+            <i class="ri-arrow-left-s-line"></i>
+        </button>
+        <ul class="portfolio-cards">
+            {
+                cards.map((card) => (
+                    <li class="card">
+                        <figure class="card-picture">
+                            {card.image ? (
+                                <Image
+                                    src={card.image}
+                                    alt={card.alt ?? card.title}
+                                    width={520}
+                                />
+                            ) : (
+                                <div class="card-placeholder" role="img" aria-label="Image pending">
+                                    <span>Image pending</span>
+                                    <span>{card.file}</span>
+                                </div>
+                            )}
+                        </figure>
+                        <div class="card-content">
+                            <h3 class="card-heading">
+                                {card.href ? <a href={card.href}>{card.title}</a> : card.title}
+                            </h3>
+                            {card.meta && <p class="card-meta">{card.meta}</p>}
+                            <p class="card-description">{card.description}</p>
+                            {card.skills && <p class="card-skills">{card.skills}</p>}
+                            {card.applications && (
+                                <p class="card-skills">Applications: {card.applications}</p>
+                            )}
+                            {card.linkLabel && card.linkHref && (
+                                <a class="card-link" href={card.linkHref}>
+                                    {card.linkLabel} &rarr;
+                                </a>
+                            )}
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+        <button class="portfolio-btn-right" aria-label="Next">
+            <i class="ri-arrow-right-s-line"></i>
+        </button>
+    </div>
+</section>
+
+<script>
+    document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+        const cards = root.querySelectorAll<HTMLElement>(".card");
+        const leftArrow = root.querySelector(".portfolio-btn-left");
+        const rightArrow = root.querySelector(".portfolio-btn-right");
+        let currentIndex = 0;
+        let isAnimating = false;
+
+        function updateCarousel(newIndex: number) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            currentIndex = (newIndex + cards.length) % cards.length;
+
+            cards.forEach((card, i) => {
+                card.classList.remove("active", "hidden");
+                card.classList.add(i === currentIndex ? "active" : "hidden");
+            });
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 800);
+        }
+
+        leftArrow?.addEventListener("click", () => updateCarousel(currentIndex - 1));
+        rightArrow?.addEventListener("click", () => updateCarousel(currentIndex + 1));
+
+        updateCarousel(0);
+    });
+</script>

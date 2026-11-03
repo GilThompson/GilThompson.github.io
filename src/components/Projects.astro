@@ -1,0 +1,58 @@
+---
+import CardSection from "./CardSection.astro";
+
+
+// Order follows the project inventory. work-N.png = Nth entry.
+const projects = [
+    {
+        title: "Citizen Infrastructure Reporting and Geospatial Application",
+        meta: "Undergraduate thesis · UASLP · 2012",
+        description:
+            "Development of a web-based mapping application for citizen reporting and geolocation of infrastructure problems, integrating spatial databases, geocoding services, and an administrative interface for report management and status tracking.",
+        skills: "Web Mapping, GIS Application Development, PostgreSQL/PostGIS, Geocoding, Google Maps API, OpenStreetMap, Frontend and Backend Development",
+    },
+    {
+        title: "Geophysical Borehole Log Analysis and 3D Visualization",
+        meta: "Master's thesis · IPICYT · 2015",
+        description:
+            "Processing and interpretation of borehole geophysical logs near Volcán de Colima, integrating spectral analysis, spatial database management, and 3D visualization.",
+        skills: "Geophysical Data Processing, Spectral Analysis, GRASS GIS, R, QGIS, PostgreSQL/PostGIS, Blender, 3D Visualization",
+    },
+    {
+        title: "UAV-Based Multispectral and Thermal Crop Monitoring",
+        meta: "Agricultural Research · UAV Operations and Data Processing",
+        description:
+            "UAV data acquisition, sensor calibration, quality control, and delivery of geospatial products supporting agricultural research campaigns.",
+        skills: "UAV Remote Sensing, Multispectral Imaging, Thermal Imaging, MicaSense RedEdge, MicaSense Altum, Radiometric Calibration, Image Processing, QA/QC",
+    },
+    {
+        title: "Multispectral Remote Sensing and Machine Learning for Aphid Damage Assessment in Wheat",
+        meta: "Agricultural Research · Remote Sensing and Data Analysis",
+        description:
+            "MicaSense RedEdge imagery of experimental plots combined with vegetation indices and statistical models to assess aphid damage. Reported results include an estimated 18.7% yield reduction and a correlation of approximately -0.55 between AUCPD and yield.",
+        skills: "Multispectral Remote Sensing, Vegetation Indices, Statistical Modeling, PCA, Random Forest, Support Vector Machines (SVM), Machine Learning",
+    },
+    {
+        title: "MicaSense Altum Multispectral and Thermal Image Processing Workflow",
+        meta: "Agricultural Research · Processing Workflow Development",
+        description:
+            "Processing workflow covering metadata extraction, calibration panels, multispectral and thermal bands, and vegetation index generation.",
+        skills: "MicaSense Altum, Python/R-based Processing Tools, ExifTool, Radiometric Calibration, Multispectral Processing, Thermal Image Processing, NDVI, EVI, OSAVI, MCARI",
+    },
+    {
+        title: "PlanetScope Satellite Imagery Processing and STAC Exploration",
+        meta: "Independent Project · Public Satellite Data",
+        description:
+            "Exploration of public Planet crisis-response imagery for a Colombia earthquake case study: STAC catalog inspection, pre- and post-event imagery organization, and visualization. An imagery-processing exercise, not a validated damage assessment.",
+        skills: "Satellite Remote Sensing, PlanetScope, STAC Catalogs, Python, GDAL, Raster Processing, QGIS, Pre- and Post-Event Imagery",
+    },
+];
+
+---
+
+<CardSection
+    id="portfolio"
+    heading="Explore some of my favorite projects and see how I translate complex ideas into reliable geospatial products."
+    items={projects}
+    imagePrefix="work"
+/>

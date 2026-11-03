@@ -1,0 +1,161 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "../styles/service-detail.css";
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+
+// Map of existing service images: filename -> built URL
+const found = import.meta.glob<{ default: ImageMetadata }>("../assets/services-*.png", {
+    eager: true,
+});
+const imageMap: Record<string, string> = {};
+for (const [path, mod] of Object.entries(found)) {
+    imageMap[path.split("/").pop() as string] = mod.default.src;
+}
+---
+
+<Layout title="Geospatial Services | GT Geosolutions">
+    <div class="service-detail" id="service-detail" data-base={base}>
+        <p class="service-detail-loading">Loading service…</p>
+        <noscript>
+            <p class="service-detail-message">
+                JavaScript is required to display service details.
+                <a href={`${base}#services`}>Back to Geospatial Services</a>
+            </p>
+        </noscript>
+    </div>
+    <script is:inline type="application/json" id="service-images" set:html={JSON.stringify(imageMap)} />
+</Layout>
+
+<script>
+    import { services } from "../data/services";
+
+    const root = document.getElementById("service-detail") as HTMLElement;
+    const base = root.dataset.base ?? "/";
+    const images: Record<string, string> = JSON.parse(
+        document.getElementById("service-images")?.textContent ?? "{}",
+    );
+
+    function el<K extends keyof HTMLElementTagNameMap>(
+        tag: K,
+        className?: string,
+        text?: string,
+    ): HTMLElementTagNameMap[K] {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+    }
+
+    function backLink(): HTMLAnchorElement {
+        const a = el("a", "service-detail-back", "← Back to Geospatial Services");
+        a.href = `${base}#services`;
+        return a;
+    }
+
+    function figure(file: string, alt: string, extraClass = ""): HTMLElement {
+        const fig = el("figure", `service-detail-figure ${extraClass}`.trim());
+        const src = images[file];
+        if (src) {
+            const img = el("img");
+            img.src = src;
+            img.alt = alt;
+            img.loading = "lazy";
+            fig.append(img);
+        } else {
+            const ph = el("div", "service-detail-placeholder");
+            ph.setAttribute("role", "img");
+            ph.setAttribute("aria-label", "Image pending");
+            ph.append(el("span", undefined, "Image pending"), el("span", undefined, file));
+            fig.append(ph);
+        }
+        return fig;
+    }
+
+    function listSection(title: string, items?: string[]): HTMLElement | null {
+        if (!items || items.length === 0) return null;
+        const section = el("section", "service-detail-section");
+        section.append(el("h2", "service-detail-subheading", title));
+        const ul = el("ul", "service-detail-list");
+        items.forEach((item) => ul.append(el("li", undefined, item)));
+        section.append(ul);
+        return section;
+    }
+
+    function tagSection(title: string, items?: string[]): HTMLElement | null {
+        if (!items || items.length === 0) return null;
+        const section = el("section", "service-detail-section");
+        section.append(el("h2", "service-detail-subheading", title));
+        const ul = el("ul", "service-detail-tags");
+        items.forEach((item) => ul.append(el("li", "service-detail-tag", item)));
+        section.append(ul);
+        return section;
+    }
+
+    const id = new URLSearchParams(window.location.search).get("id");
+    const service = services.find((s) => s.id === id);
+
+    root.replaceChildren();
+
+    if (!service) {
+        document.title = "Service not found | GT Geosolutions";
+        const msg = el("div", "service-detail-notfound");
+        msg.append(
+            el("h1", "service-detail-title", "Service not found"),
+            el(
+                "p",
+                "service-detail-text",
+                id
+                    ? "The requested service does not exist or the link is outdated."
+                    : "No service was selected.",
+            ),
+            backLink(),
+        );
+        root.append(msg);
+    } else {
+        document.title = `${service.title} | GT Geosolutions`;
+
+        const header = el("header", "service-detail-header");
+        header.append(
+            backLink(),
+            el("h1", "service-detail-title", service.title),
+            el("p", "service-detail-meta", service.meta),
+        );
+
+        const body = el("div", "service-detail-body");
+        body.append(figure(service.image, service.title, "service-detail-main-image"));
+
+        const intro = el("section", "service-detail-section");
+        intro.append(
+            el("h2", "service-detail-subheading", "Overview"),
+            el("p", "service-detail-text", service.description),
+        );
+        body.append(intro);
+
+        [
+            listSection("Applications", service.applications),
+            listSection("Deliverables", service.deliverables),
+            listSection("Technical Capabilities", service.capabilities),
+            tagSection("Technologies and Tools", service.technologies),
+        ].forEach((section) => section && body.append(section));
+
+        if (service.gallery && service.gallery.length > 0) {
+            const gallery = el("section", "service-detail-section");
+            gallery.append(el("h2", "service-detail-subheading", "Gallery"));
+            const grid = el("div", "service-detail-gallery");
+            service.gallery.forEach((file, i) =>
+                grid.append(figure(file, `${service.title} – image ${i + 1}`)),
+            );
+            gallery.append(grid);
+            body.append(gallery);
+        }
+
+        const cta = el("section", "service-detail-cta");
+        cta.append(el("h2", "service-detail-subheading", "Interested in this service?"));
+        const link = el("a", "hero-button", "Contact me about this service");
+        link.href = `${base}#contact`;
+        cta.append(link);
+
+        root.append(header, body, cta);
+    }
+</script>

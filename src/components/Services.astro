@@ -1,0 +1,23 @@
+---
+import CardSection from "./CardSection.astro";
+import { services } from "../data/services";
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+
+const items = services.map((s) => ({
+    title: s.title,
+    meta: s.meta,
+    description: s.shortDescription,
+    applications: s.applicationsShort,
+    image: s.image,
+    linkLabel: "View service details",
+    linkHref: `${base}services.html?id=${encodeURIComponent(s.id)}`,
+}));
+---
+
+<CardSection
+    id="services"
+    heading="Geospatial solutions and technical consulting for organizations and professionals working with Big-data, Earth observation, mapping, and applied geospatial technologies."
+    items={items}
+    imagePrefix="services"
+/>

@@ -1,0 +1,55 @@
+---
+import { Image } from "astro:assets";
+import User from "../assets/Image.png";
+---
+
+<section class="about" id="about">
+    <div class="about-left-section">
+        <div class="about-image">
+            <div class="about-social">
+                <a href="https://github.com/GilThompson"><i class="ri-github-fill"></i></a>
+            </div>
+            <div class="about-social">
+                <a href="https://www.linkedin.com/in/gil-thompson"><i class="ri-linkedin-fill"></i></a>
+            </div>
+            <div class="about-social">
+                <a href="#"><i class="ri-twitter-x-fill"></i></a>
+            </div>
+            <figure class="about-picture">
+                <Image src={User} alt="Gil Thompson" loading="eager" />
+            </figure>
+        </div>
+        <div class="about-tags">
+            <span class="about-tag">#GeospatialScience</span>
+            <span class="about-tag">#SpatialDataEngineering</span>
+            <span class="about-tag">#RemoteSensing</span>
+            <span class="about-tag">#EarthObservation</span>
+            <span class="about-tag">#GeospatialIntelligence</span>
+            <span class="about-tag">#DataAnalytics</span>
+            <span class="about-tag">#ScientificComputing</span>
+            <span class="about-tag">#UAV-Pilot</span>
+        </div>
+        <div class="about-attributes">
+            <div class="about-attribute">
+                <h3 class="about-attribute-amount">+300</h3>
+                <p class="about-attribute-description">Flight hours</p>
+            </div>
+            <div class="about-attribute">
+                <h3 class="about-attribute-amount">+10</h3>
+                <p class="about-attribute-description">Years Of Projects</p>
+            </div>
+        </div>
+    </div>
+    <div class="about-right-section">
+        <article class="about-bio">
+            <p class="about-body">
+               As a Geomatics Engineer with an M.Sc. in Applied Geosciences, my work lives at the intersection of engineering, Earth sciences, and programming. This basically means I love taking raw data from satellites, drones, or the field and turning it into smart solutions.
+            </p>
+            <p class="about-body">
+               Over the years, I’ve specialized in GIS, remote sensing, and photogrammetry, focusing on building automated workflows that make complex spatial data reliable and easy to understand. I enjoy bridging the gap between research and practical tech to solve real-world problems.
+            <p class="about-body">
+               Most of my projects come from the need to understand, monitor, and evaluate physical spaces and natural processes. From tracking crop health and geological mapping to civil infrastructure monitoring, I use spatial data to analyze our planet's dynamics and build practical solutions that help teams make smarter, data-driven decisions.
+            </p>
+        </article>
+    </div>
+</section>
