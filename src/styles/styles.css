@@ -211,13 +211,19 @@ main {
 
 .about-social:nth-child(2) {
     top: -4.5rem;
-    right: -6rem;
+    right: -4.5rem;
 }
 
 .about-social:nth-child(3) {
-    top: 1.5rem;
+    top: 2.5rem;
     left: -6rem;
 }
+
+.about-social:nth-child(4) {
+    top: 1.5rem;
+    right: -6rem;
+}
+
 
 .about figure {
     width: 6rem;
