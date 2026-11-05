@@ -627,11 +627,11 @@ textarea.contact-form-input {
 }
 
 /* Justified text: Hero, About, Portfolio and Geospatial Services */
-.hero-heading,
+/*.hero-heading, */
 .about-body,
-.portfolio-heading,
+/*.portfolio-heading,*/
 .card-description,
-.card-skills,
+/*.card-skills,*/
 .service-detail-text,
 .service-detail-list li {
     text-align: justify;
