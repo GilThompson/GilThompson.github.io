@@ -8,6 +8,11 @@ A template adapted for GIS developers made in Astro. 🧑‍🚀
 ```sh
 git clone https://github.com/GilThompson.github.io
 ```
+See my portfolio
+```
+https://gilthompson.github.io/
+```
+
 
 ## 🧞 Commands
 
